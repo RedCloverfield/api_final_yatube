@@ -36,5 +36,5 @@ class Group(models.Model):
 
 
 class Follow(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following_user')
-    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followed_user')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following_users')
+    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followed_users')
