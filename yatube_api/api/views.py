@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from rest_framework import mixins, viewsets
 
 from posts.models import Group, Post
 from .serializers import CommentSerializer, FollowSerializer, GroupSerializer, PostSerializer
@@ -20,7 +20,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         return get_object_or_404(Post, pk=self.kwargs['post_id'])
 
     def get_queryset(self):
-        return get_object_or_404().comments.all()
+        return self.get_post_object().comments.all()
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user, post=self.get_post_object())
@@ -31,14 +31,14 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = GroupSerializer
 
 
-class FollowViewSet(viewsets.ModelViewSet):
+class FollowViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = FollowSerializer
 
     def get_object(self):
         return self.request.user
 
     def get_queryset(self):
-        return self.get_object().followed_users.all()
+        return self.get_object().following_users.all()
 
     def perform_create(self, serializer):
         serializer.save(user=self.get_object())
