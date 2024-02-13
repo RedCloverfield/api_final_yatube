@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import mixins, viewsets
+from rest_framework import filters, mixins, viewsets
 
 from posts.models import Group, Post
 from .serializers import CommentSerializer, FollowSerializer, GroupSerializer, PostSerializer
@@ -33,6 +33,8 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
 
 class FollowViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = FollowSerializer
+    filter_backends =(filters.SearchFilter,)
+    search_fields = ('following__username',)
 
     def get_object(self):
         return self.request.user
