@@ -12,7 +12,8 @@ class Post(models.Model):
     image = models.ImageField(
         upload_to='posts/', null=True, blank=True)
     group = models.ForeignKey(
-        'Group', on_delete=models.CASCADE, blank=True, null=True, related_name='posts'
+        'Group', on_delete=models.CASCADE, blank=True,
+        null=True, related_name='posts'
     )
 
     def __str__(self):
@@ -39,5 +40,9 @@ class Group(models.Model):
 
 
 class Follow(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following_users')
-    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followed_users')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='following_users'
+    )
+    following = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='followed_users'
+    )
