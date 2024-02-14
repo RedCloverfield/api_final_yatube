@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import filters, mixins, viewsets
+from rest_framework.pagination import LimitOffsetPagination
 
 from posts.models import Group, Post
 from .serializers import CommentSerializer, FollowSerializer, GroupSerializer, PostSerializer
@@ -8,6 +9,7 @@ from .serializers import CommentSerializer, FollowSerializer, GroupSerializer, P
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    pagination_class = LimitOffsetPagination
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
